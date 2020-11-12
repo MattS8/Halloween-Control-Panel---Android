@@ -1,4 +1,4 @@
-`package com.ms8.halloweencontrolpanel
+package com.ms8.halloweencontrolpanel
 
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
