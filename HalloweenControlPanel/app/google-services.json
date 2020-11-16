@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "929538281629",
+    "firebase_url": "https://halloween-control-center.firebaseio.com",
+    "project_id": "halloween-control-center",
+    "storage_bucket": "halloween-control-center.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929538281629:android:ef188088910fbc73790474",
+        "android_client_info": {
+          "package_name": "com.ms8.halloweencontrolpanel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929538281629-ukgkfkdaa43ctp842u7vip8im5eutp7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRezSCagLU2ZqXn9bYVfr5bEd1UajSPcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929538281629-ukgkfkdaa43ctp842u7vip8im5eutp7l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,4 +9,26 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="devices">Devices</string>
+    <string name="lanternPinDesc">This is the pin value that controls the lantern light.</string>
+    <string name="lanternMinBrightnessDesc">This is the minimum brightness that the lantern can be set to. NOTE: Due to how the heuristics on the light work, a lower min brightness will cause the light to dim quicker. (Default: 250)</string>
+    <string name="lanternMaxBrightnessDesc">This is the maximum brightness that the lantern can be set to. NOTE: Any value about ~550 appears to have no noticeable difference with regards to brightness. (Default: 450)</string>
+    <string name="lanternSmoothingDesc">This value controls how smoothly the light ramps up and down. Higher values will make the light level ramp faster. (Default: 1)</string>
+    <string name="lanternFlickerRateDesc">This value controls the delay in between each interval in the light\'s flicker routine. NOTE: A higher value will produce a slower flicker. (Default: 1)</string>
+    <string name="lanternDropDelayDesc">This value controls the time in between dropping from the highest value to the minimum value for any given flicker interval. (Default: 150)</string>
+    <string name="lanternDropValueDesc">This value controls how much the light level drops after hitting the max value for any given flicker interval. A higher value will increased the perceived \"flicker\" for that given interval. (Default: 2)</string>
+    <string name="device_details">Device Details</string>
+    <string name="lantern_details">Lantern Details</string>
+    <string name="lanternNameDesc">This is the name of the lantern. Give it a unique name so that you can differentiate it from the rest!</string>
+
+    <string-array name="pin_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
 </resources>

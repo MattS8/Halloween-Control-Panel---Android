@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/DeviceItmRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginStart="@dimen/list_edge_margin"
+    android:layout_marginLeft="@dimen/list_edge_margin"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="@dimen/list_edge_margin"
+    android:layout_marginRight="@dimen/list_edge_margin"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="#1B1B1B"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?selectableItemBackground"
+        >
+
+
+        <ImageView
+            android:id="@+id/imgDeviceImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:id="@+id/tvDeviceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/list_edge_margin"
+            android:layout_marginLeft="@dimen/list_edge_margin"
+            android:layout_marginEnd="@dimen/list_edge_margin"
+            android:layout_marginRight="@dimen/list_edge_margin"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/Base.V0.TextAppearance.SubHeader"
+            tools:text="Device Name" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
