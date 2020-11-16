@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/ControlFragment"
-        android:name="com.ms8.halloweencontrolpanel.SecondFragment"
+        android:name="com.ms8.halloweencontrolpanel.DeviceDetailsFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_device_controls">
 

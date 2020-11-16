@@ -322,7 +322,7 @@
                     android:layout_marginLeft="@dimen/list_edge_margin"
                     android:layout_marginEnd="@dimen/list_edge_margin"
                     android:layout_marginRight="@dimen/list_edge_margin"
-                    android:layout_marginBottom="144dp"
+                    android:layout_marginBottom="24dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -352,6 +352,16 @@
                         android:background="?selectableItemBackground"
                         app:srcCompat="@drawable/ic_baseline_help_outline_24" />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnToSliderMode"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="75dp"
+                    android:text="@string/slider_mode" />
             </LinearLayout>
         </ScrollView>
 
