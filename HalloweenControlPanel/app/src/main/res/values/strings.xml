@@ -14,8 +14,8 @@
     <string name="lanternMinBrightnessDesc">This is the minimum brightness that the lantern can be set to. NOTE: Due to how the heuristics on the light work, a lower min brightness will cause the light to dim quicker. (Default: 0)</string>
     <string name="lanternMaxBrightnessDesc">This is the maximum brightness that the lantern can be set to. NOTE: Any value about ~550 appears to have no noticeable difference with regards to brightness. (Default: 150)</string>
     <string name="lanternSmoothingDesc">This value controls how smoothly the light ramps up and down. Higher values will make the light level ramp faster. (Default: 1)</string>
-    <string name="lanternFlickerRateDesc">This value controls the delay in between each interval in the light\'s flicker routine. NOTE: A higher value will produce a slower flicker. (Default: 1000)</string>
-    <string name="lanternDropDelayDesc">This value controls the time in between dropping from the highest value to the minimum value for any given flicker interval. (Default: 65000)</string>
+    <string name="lanternFlickerRateDesc">This value controls the delay in between each ramp interval. NOTE: A higher value will produce a slower flicker. (Default: 1000)</string>
+    <string name="lanternDropDelayDesc">This value controls the time in between dropping from the highest value to the minimum value for any given flicker interval. (Default: 1000)</string>
     <string name="lanternDropValueDesc">This value controls how much the light level drops after hitting the max value for any given flicker interval. A higher value will increased the perceived \"flicker\" for that given interval. (Default: 1)</string>
     <string name="device_details">Device Details</string>
     <string name="lantern_details">Lantern Details</string>
@@ -31,7 +31,7 @@
     <string name="smoothing_value_help">Smoothing Value Help</string>
     <string name="update">Update</string>
     <string name="smoothing_value">Smoothing Value:</string>
-    <string name="flicker_rate_microseconds">Flicker Rate (microseconds):</string>
+    <string name="ramp_delay_microseconds">Ramp Delay (microseconds):</string>
     <string name="drop_delay_microseconds">Drop Delay (microseconds):</string>
     <string name="drop_value">Drop Value:</string>
     <string name="max_brightness">Max Brightness:</string>
@@ -41,6 +41,10 @@
     <string name="dismiss">Dismiss</string>
     <string name="precision_mode">Precision Mode</string>
     <string name="slider_mode">Slider Mode</string>
+    <string name="lanternFlickerDelayMinDesc">This value controls the minimum delay time between flicker cycles after having ramped down to the minimum. (Default: 10)</string>
+    <string name="lanternFlickerDelayMaxDesc">This value controls the maximum delay time between flicker cycles after having ramped down to the minimum. (Default: 10)</string>
+    <string name="min_flicker_delay_ms">Min Flicker Delay (ms):</string>
+    <string name="max_flicker_delay_ms">Max Flicker Delay (ms):</string>
 
     <string-array name="pin_values">
         <item>1</item>

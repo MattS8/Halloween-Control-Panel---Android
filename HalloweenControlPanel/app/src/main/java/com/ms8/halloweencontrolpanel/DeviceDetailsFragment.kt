@@ -60,6 +60,28 @@ class DeviceDetailsFragment : Fragment() {
         return rootView
     }
 
+    private fun onHelpButtonClicked(id: Int) {
+        val helpDesc = when (id) {
+            R.id.btnDropDelayHelp -> getString(R.string.lanternDropDelayDesc)
+            R.id.btnDropValueHelp -> getString(R.string.lanternDropValueDesc)
+            R.id.btnRampDelayHelp -> getString(R.string.lanternFlickerRateDesc)
+            R.id.btnMinBrightnessHelp -> getString(R.string.lanternMinBrightnessDesc)
+            R.id.btnMaxBrightnessHelp -> getString(R.string.lanternMaxBrightnessDesc)
+            R.id.btnPinHelp -> getString(R.string.lanternPinDesc)
+            R.id.btnNameHelp -> getString(R.string.lanternNameDesc)
+            R.id.btnSmoothingHelp -> getString(R.string.lanternSmoothingDesc)
+            R.id.btnFlickerDelayMinHelp -> getString(R.string.lanternFlickerDelayMinDesc)
+            R.id.btnFlickerDelayMaxHelp -> getString(R.string.lanternFlickerDelayMaxDesc)
+            else -> ""
+        }
+
+        AlertDialog.Builder(requireContext())
+                .setTitle(R.string.help_title)
+                .setMessage(helpDesc)
+                .setPositiveButton(getString(R.string.dismiss)) { dialog, _ -> dialog?.dismiss() }
+                .create()
+                .show()
+    }
 
     private fun setupLanternDetailsWithSliders(rootView: View, inflater: LayoutInflater) {
         val frameLayout = rootView.findViewById<FrameLayout>(R.id.detailsContainer)
@@ -98,7 +120,7 @@ class DeviceDetailsFragment : Fragment() {
                 skDropValue.progress = lantern.dropValue
 
                 val flickerStepSize = 100
-                skFlickerRate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                skRampDelay.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                         if (fromUser)
                             seekBar?.progress = (progress/flickerStepSize)*flickerStepSize
@@ -107,7 +129,7 @@ class DeviceDetailsFragment : Fragment() {
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
                 })
-                skFlickerRate.progress = lantern.flickerRate
+                skRampDelay.progress = lantern.rampDelay
 
                 skMinBrightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -130,6 +152,26 @@ class DeviceDetailsFragment : Fragment() {
                 })
                 skMaxBrightness.progress = lantern.maxBrightness
 
+                skFlickerDelayMin.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        tvFlickerDelayMinVal.text = progress.toString()
+                    }
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+                })
+                skFlickerDelayMin.progress = lantern.flickerDelayMin
+
+                skFlickerDelayMax.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        tvFlickerDelayMaxVal.text = progress.toString()
+                    }
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+                })
+                skFlickerDelayMax.progress = lantern.flickerDelayMax
+
                 ArrayAdapter.createFromResource(
                         this@DeviceDetailsFragment.requireContext(),
                         R.array.pin_values,
@@ -144,10 +186,12 @@ class DeviceDetailsFragment : Fragment() {
                     lantern.smoothing = skSmoothing.progress
                     lantern.minBrightness = skMinBrightness.progress
                     lantern.maxBrightness = skMaxBrightness.progress
-                    lantern.flickerRate = skFlickerRate.progress
+                    lantern.rampDelay = skRampDelay.progress
                     lantern.dropValue = skDropValue.progress
                     lantern.dropDelay = skDropDelay.progress
                     lantern.name = etName.text.toString()
+                    lantern.flickerDelayMin = skFlickerDelayMin.progress
+                    lantern.flickerDelayMax = skFlickerDelayMax.progress
                     lantern.pin = pinFromPos(spnPin.selectedItemPosition)
 
                     FirebaseDao.updateDevice(lantern)
@@ -172,27 +216,6 @@ class DeviceDetailsFragment : Fragment() {
         frameLayout.addView(lanternDetailsBinding.lanternContentRoot)
     }
 
-    private fun onHelpButtonClicked(id: Int) {
-        val helpDesc = when (id) {
-            R.id.btnDropDelayHelp -> getString(R.string.lanternDropDelayDesc)
-            R.id.btnDropValueHelp -> getString(R.string.lanternDropValueDesc)
-            R.id.btnFlickerRateHelp -> getString(R.string.lanternFlickerRateDesc)
-            R.id.btnMinBrightnessHelp -> getString(R.string.lanternMinBrightnessDesc)
-            R.id.btnMaxBrightnessHelp -> getString(R.string.lanternMaxBrightnessDesc)
-            R.id.btnPinHelp -> getString(R.string.lanternPinDesc)
-            R.id.btnNameHelp -> getString(R.string.lanternNameDesc)
-            R.id.btnSmoothingHelp -> getString(R.string.lanternSmoothingDesc)
-            else -> ""
-        }
-
-        AlertDialog.Builder(requireContext())
-                .setTitle(R.string.help_title)
-                .setMessage(helpDesc)
-                .setPositiveButton(getString(R.string.dismiss)) { dialog, _ -> dialog?.dismiss() }
-                .create()
-                .show()
-    }
-
     private fun setupLanternDetailsWithEditTexts(rootView: View, inflater: LayoutInflater) {
         val frameLayout = rootView.findViewById<FrameLayout>(R.id.detailsContainer)
         val lanternDetailsBinding = ContentLanternControlsBinding.inflate(inflater)
@@ -201,10 +224,12 @@ class DeviceDetailsFragment : Fragment() {
                 etName.setText(lantern.name)
                 etDropDelay.setText(lantern.dropDelay.toString())
                 etDropValue.setText(lantern.dropValue.toString())
-                etFlickerRate.setText(lantern.flickerRate.toString())
+                etRampDelay.setText(lantern.rampDelay.toString())
                 etMinBrightness.setText(lantern.minBrightness.toString())
                 etMaxBrightness.setText(lantern.maxBrightness.toString())
                 etSmoothing.setText(lantern.smoothing.toString())
+                etFlickerDelayMin.setText(lantern.flickerDelayMin.toString())
+                etFlickerDelayMax.setText(lantern.flickerDelayMax.toString())
 
                 ArrayAdapter.createFromResource(
                         this@DeviceDetailsFragment.requireContext(),
@@ -221,20 +246,30 @@ class DeviceDetailsFragment : Fragment() {
                     lantern.smoothing = etSmoothing.text.toString().toInt()
                     lantern.minBrightness = etMinBrightness.text.toString().toInt()
                     lantern.maxBrightness = etMaxBrightness.text.toString().toInt()
-                    lantern.flickerRate = etFlickerRate.text.toString().toInt()
+                    lantern.rampDelay = etRampDelay.text.toString().toInt()
                     lantern.dropValue = etDropValue.text.toString().toInt()
                     lantern.dropDelay = etDropDelay.text.toString().toInt()
+                    lantern.flickerDelayMin = etFlickerDelayMin.text.toString().toInt()
+                    lantern.flickerDelayMax = etFlickerDelayMin.text.toString().toInt()
                     lantern.name = etName.text.toString()
                     lantern.pin = pinFromPos(spnPin.selectedItemPosition)
 
                     FirebaseDao.updateDevice(lantern)
                 }
 
+                btnDropDelayHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+                btnDropValueHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+                btnRampDelayHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+                btnMaxBrightnessHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+                btnMinBrightnessHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+                btnNameHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+                btnPinHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+                btnSmoothingHelp.setOnClickListener { onHelpButtonClicked(it.id) }
+
                 btnToSliderMode.setOnClickListener {
                     mode = SLIDER
                     frameLayout.removeAllViews()
                     setupLanternDetailsWithSliders(rootView, inflater)
-
                 }
             }
         }

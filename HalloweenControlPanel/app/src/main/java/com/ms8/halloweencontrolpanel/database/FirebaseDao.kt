@@ -59,9 +59,11 @@ object FirebaseDao {
                                         (mapVal[LanternDevice.MIN_BRIGHTNESS] as Number).toInt(),
                                         (mapVal[LanternDevice.MAX_BRIGHTNESS] as Number).toInt(),
                                         (mapVal[LanternDevice.SMOOTHING] as Number).toInt(),
-                                        (mapVal[LanternDevice.FLICKER_RATE] as Number).toInt(),
+                                        (mapVal[LanternDevice.RAMP_DELAY] as Number).toInt(),
                                         (mapVal[LanternDevice.DROP_DELAY] as Number).toInt(),
-                                        (mapVal[LanternDevice.DROP_VALUE] as Number).toInt()
+                                        (mapVal[LanternDevice.DROP_VALUE] as Number).toInt(),
+                                        (mapVal[LanternDevice.FLICKER_DELAY_MIN] as Number).toInt(),
+                                        (mapVal[LanternDevice.FLICKER_DELAY_MAX] as Number).toInt()
                                             )
                             )
                         }

@@ -291,7 +291,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:max="100000"/>
+                            android:max="15000"/>
 
                         <ImageButton
                             android:id="@+id/btnDropDelayHelp"
@@ -384,11 +384,11 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tvFlickerRateLabel"
+                            android:id="@+id/tvRampDelayLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/flicker_rate_microseconds"
+                            android:text="@string/ramp_delay_microseconds"
                             android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
 
                         <TextView
@@ -409,7 +409,7 @@
                         android:orientation="horizontal">
 
                         <SeekBar
-                            android:id="@+id/skFlickerRate"
+                            android:id="@+id/skRampDelay"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -479,6 +479,130 @@
 
                         <ImageButton
                             android:id="@+id/btnSmoothingHelp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="?selectableItemBackground"
+                            android:contentDescription="@string/smoothing_value_help"
+                            app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvFlickerDelayMin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/min_flicker_delay_ms"
+                            android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                        <TextView
+                            android:id="@+id/tvFlickerDelayMinVal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+
+                            android:layout_weight="1"
+                            android:textStyle="italic"
+                            tools:text="150" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/skFlickerDelayMin"
+                            style="@style/Widget.AppCompat.SeekBar.Discrete"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="300"
+                            android:progress="3" />
+
+                        <ImageButton
+                            android:id="@+id/btnFlickerDelayMinHelp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="?selectableItemBackground"
+                            android:contentDescription="@string/smoothing_value_help"
+                            app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvFlickerDelayMax"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/max_flicker_delay_ms"
+                            android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                        <TextView
+                            android:id="@+id/tvFlickerDelayMaxVal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+
+                            android:layout_weight="1"
+                            android:textStyle="italic"
+                            tools:text="150" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/skFlickerDelayMax"
+                            style="@style/Widget.AppCompat.SeekBar.Discrete"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:max="300"
+                            android:progress="3" />
+
+                        <ImageButton
+                            android:id="@+id/btnFlickerDelayMaxHelp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
