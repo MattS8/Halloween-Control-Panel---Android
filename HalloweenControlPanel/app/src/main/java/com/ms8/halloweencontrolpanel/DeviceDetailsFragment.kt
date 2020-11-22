@@ -98,7 +98,7 @@ class DeviceDetailsFragment : Fragment() {
                 })
                 skSmoothing.progress = lantern.smoothing
 
-                val dropDelayStepSize = 500
+                val dropDelayStepSize = 10
                 skDropDelay.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                         if (fromUser)
@@ -250,7 +250,7 @@ class DeviceDetailsFragment : Fragment() {
                     lantern.dropValue = etDropValue.text.toString().toInt()
                     lantern.dropDelay = etDropDelay.text.toString().toInt()
                     lantern.flickerDelayMin = etFlickerDelayMin.text.toString().toInt()
-                    lantern.flickerDelayMax = etFlickerDelayMin.text.toString().toInt()
+                    lantern.flickerDelayMax = etFlickerDelayMax.text.toString().toInt()
                     lantern.name = etName.text.toString()
                     lantern.pin = pinFromPos(spnPin.selectedItemPosition)
 

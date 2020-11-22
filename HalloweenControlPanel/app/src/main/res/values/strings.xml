@@ -32,7 +32,7 @@
     <string name="update">Update</string>
     <string name="smoothing_value">Smoothing Value:</string>
     <string name="ramp_delay_microseconds">Ramp Delay (microseconds):</string>
-    <string name="drop_delay_microseconds">Drop Delay (microseconds):</string>
+    <string name="drop_delay_microseconds">Drop Delay:</string>
     <string name="drop_value">Drop Value:</string>
     <string name="max_brightness">Max Brightness:</string>
     <string name="min_brightness_label">Min Brightness:</string>
