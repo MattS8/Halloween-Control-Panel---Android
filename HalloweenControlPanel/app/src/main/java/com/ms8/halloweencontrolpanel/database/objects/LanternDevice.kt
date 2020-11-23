@@ -34,30 +34,20 @@ class LanternDevice(
         return returnMap
     }
 
-    override fun getVariableDescription(context: Context, variableName: String): String {
-        return when (variableName) {
-            NAME -> context.getString(R.string.lanternNameDesc)
-            PIN -> context.getString(R.string.lanternPinDesc)
-            MIN_BRIGHTNESS -> context.getString(R.string.lanternMinBrightnessDesc)
-            MAX_BRIGHTNESS -> context.getString(R.string.lanternMaxBrightnessDesc)
-            SMOOTHING -> context.getString(R.string.lanternSmoothingDesc)
-            RAMP_DELAY -> context.getString(R.string.lanternFlickerRateDesc)
-            DROP_DELAY -> context.getString(R.string.lanternDropDelayDesc)
-            DROP_VALUE -> context.getString(R.string.lanternDropValueDesc)
-            FLICKER_DELAY_MAX -> context.getString(R.string.lanternFlickerDelayMaxDesc)
-            FLICKER_DELAY_MIN -> context.getString(R.string.lanternFlickerDelayMinDesc)
-            else -> {
-                Log.e("LanternDevice",
-                    "getVariableDescription - Unknown variable name: $variableName. Should be one of:\n " +
-                            getVariableNames()
-                )
-                ""
-            }
+    override fun getVariableDescription(context: Context, id: Int): String {
+        return when (id) {
+            R.id.btnDropDelayHelp -> context.getString(R.string.lanternDropDelayDesc)
+            R.id.btnDropValueHelp -> context.getString(R.string.lanternDropValueDesc)
+            R.id.btnRampDelayHelp -> context.getString(R.string.lanternFlickerRateDesc)
+            R.id.btnMinBrightnessHelp -> context.getString(R.string.lanternMinBrightnessDesc)
+            R.id.btnMaxBrightnessHelp -> context.getString(R.string.lanternMaxBrightnessDesc)
+            R.id.btnPinHelp -> context.getString(R.string.lanternPinDesc)
+            R.id.btnNameHelp -> context.getString(R.string.lanternNameDesc)
+            R.id.btnSmoothingHelp -> context.getString(R.string.lanternSmoothingDesc)
+            R.id.btnFlickerDelayMinHelp -> context.getString(R.string.lanternFlickerDelayMinDesc)
+            R.id.btnFlickerDelayMaxHelp -> context.getString(R.string.lanternFlickerDelayMaxDesc)
+            else -> super.getVariableDescription(context, id)
         }
-    }
-
-    private fun getVariableNames() : String {
-        return "\t$NAME\n\t$PIN\n\t$MAX_BRIGHTNESS\n\t$MIN_BRIGHTNESS\n\t$SMOOTHING\n\t$RAMP_DELAY\n\t$DROP_DELAY\n\t$DROP_VALUE"
     }
 
     companion object {

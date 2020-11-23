@@ -453,7 +453,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             android:layout_margin="32dp"
-            android:text="Update"
+            android:text="@string/update"
             android:textColor="?android:textColorPrimary"
             android:gravity="center"
             />

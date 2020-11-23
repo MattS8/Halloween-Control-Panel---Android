@@ -38,13 +38,16 @@ open class Device(
         }
     }
 
-    open fun getVariableDescription(context: Context, variableName: String) : String = ""
+    open fun getVariableDescription(context: Context, id: Int) : String = ""
+
 
     companion object {
         const val NAME = "name"
         const val GROUP_NAME = "groupName"
         const val LAST_UPDATED = "lastUpdated"
         const val PIN = "pin"
+
+        const val PIN_A0 = 88
     }
 
     enum class State {

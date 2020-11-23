@@ -18,7 +18,7 @@
     <string name="lanternDropDelayDesc">This value controls the time in between dropping from the highest value to the minimum value for any given flicker interval. (Default: 1000)</string>
     <string name="lanternDropValueDesc">This value controls how much the light level drops after hitting the max value for any given flicker interval. A higher value will increased the perceived \"flicker\" for that given interval. (Default: 1)</string>
     <string name="device_details">Device Details</string>
-    <string name="lantern_details">Lantern Details</string>
+    <string name="lantern_details">Lantern Controls</string>
     <string name="lanternNameDesc">This is the name of the lantern. Give it a unique name so that you can differentiate it from the rest!</string>
     <string name="name">Name:</string>
     <string name="name_help">Name Help</string>
@@ -45,8 +45,31 @@
     <string name="lanternFlickerDelayMaxDesc">This value controls the maximum delay time between flicker cycles after having ramped down to the minimum. (Default: 10)</string>
     <string name="min_flicker_delay_ms">Min Flicker Delay (ms):</string>
     <string name="max_flicker_delay_ms">Max Flicker Delay (ms):</string>
+    <string name="spider_drop_details">Spider Drop Controls</string>
+    <string name="hanging_time_ms">Hanging Time (ms):</string>
+    <string name="drop_spider">Drop Spider</string>
+    <string name="spiderDropNameDec">This is the name of the spider dropping device.</string>
+    <string name="spiderDropPinDesc">This value determines which pin to use to control the release and retracting of the spider.</string>
+    <string name="spiderDropHangTimeDesc">This value determines how long the spider will remain in the dropped position before retracting. (Default: 2000)</string>
+    <string name="spiderDropStayDroppedDesc">This value determines if the spider should remain in the dropped position indefinitely, regardless of what \'Hang Time\' is set to. NOTE: The only way to retract the spider is via the app. (Default: false)</string>
+    <string name="state_label">State:</string>
+    <string name="err_spider_retracting">The spider is still retracting. Please Wait.</string>
+    <string name="retracting_btn_text">Retracting...</string>
+    <string name="retract_spider">Retract Spider</string>
 
     <string-array name="pin_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+
+    <string-array name="pin_values_all">
+        <item>A0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>

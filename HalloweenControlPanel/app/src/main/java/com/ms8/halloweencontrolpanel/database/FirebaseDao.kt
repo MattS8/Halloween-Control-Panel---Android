@@ -18,6 +18,36 @@ object FirebaseDao {
         ObservableField(HashMap())
     }
 
+    /* Public Accessors */
+    fun getDevice(uid: String, groupName:String? = null): Device? {
+        when (groupName) {
+            null -> {
+                devices.get()?.keys?.forEach { key ->
+
+                    Log.d("TEST", "Checking $key group for $uid")
+                    devices.get()?.get(key)?.forEach { device ->
+                        Log.d("TEST", "\t${device.uid} | $uid")
+                        if (device.uid == uid)
+                            return device
+                    }
+                }
+                return null
+            }
+            else -> {
+                devices.get()?.get(groupName)?.forEach { device ->
+                    if (device.uid == uid)
+                        return device
+                }
+                return null
+            }
+        }
+    }
+
+    fun updateDevice(device: Device) {
+        FirebaseDatabase.getInstance().getReference("devices").child(device.uid)
+                .setValue(device.getFirebaseObject())
+    }
+
     fun listenForDevices(callback: DeviceListCallback?) {
         FirebaseDatabase.getInstance().getReference("devices").addValueEventListener(
                 object : ValueEventListener {
@@ -33,6 +63,24 @@ object FirebaseDao {
         )
     }
 
+    fun listenToValue(value: String, deviceUID: String, listener: ValueEventListener) {
+        FirebaseDatabase.getInstance().getReference("devices").child(deviceUID)
+                .child(value)
+                .addValueEventListener(listener)
+    }
+
+    fun stopListeningToValue(value: String, deviceUID: String, listener: ValueEventListener) {
+        FirebaseDatabase.getInstance().getReference("devices").child(deviceUID)
+                .child(value)
+                .removeEventListener(listener)
+    }
+
+    fun sendCommand(command: String, deviceUID: String) {
+        FirebaseDatabase.getInstance().getReference("command").child(deviceUID)
+                .setValue(command)
+    }
+
+    /* Helper Functions */
     private fun parseDeviceListSnapshot(snapshot: DataSnapshot): MutableMap<String, MutableList<Device>> {
         val newMap : MutableMap<String, MutableList<Device>> =
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
@@ -80,36 +128,8 @@ object FirebaseDao {
         return newMap
     }
 
-    fun getDevice(uid: String, groupName:String? = null): Device? {
-        when (groupName) {
-            null -> {
-                devices.get()?.keys?.forEach { key ->
-
-                    Log.d("TEST", "Checking $key group for $uid")
-                    devices.get()?.get(key)?.forEach { device ->
-                        Log.d("TEST", "\t${device.uid} | $uid")
-                        if (device.uid == uid)
-                            return device
-                    }
-                }
-                return null
-            }
-            else -> {
-                devices.get()?.get(groupName)?.forEach { device ->
-                    if (device.uid == uid)
-                        return device
-                }
-                return null
-            }
-        }
-    }
-
-    fun updateDevice(device: Device) {
-        FirebaseDatabase.getInstance().getReference("devices").child(device.uid)
-            .setValue(device.getFirebaseObject())
-    }
-
-    const val TAG = "Database"
+    /* Constants and Interfaces */
+    private const val TAG = "Database"
 
     interface DeviceListCallback {
         fun onDeviceListChanged(newList: Map<String, List<Device>>)

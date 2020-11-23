@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvDetailsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="@dimen/list_edge_margin"
+            android:layout_marginLeft="@dimen/list_edge_margin"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/list_edge_margin"
+            android:layout_marginRight="@dimen/list_edge_margin"
+            android:text="@string/spider_drop_details"
+            android:textAppearance="@style/AppTheme.TextAppearance.Header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDetailsHeader"
+            app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/state_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.Header"
+                        android:textSize="18sp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvStateVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="RETRACTED"
+                        tools:textColor="@color/spiderRetractedTextColor"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvNameLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:ems="10"
+                        android:singleLine="true"
+                        android:inputType="textPersonName" />
+
+                    <ImageButton
+                        android:id="@+id/btnNameHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvPinLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/pin_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <Spinner
+                        android:id="@+id/spnPin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:minWidth="150dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnPinHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        android:contentDescription="@string/pin_help"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvHangTimeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/hanging_time_ms"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <EditText
+                        android:id="@+id/etHangTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="number" />
+
+                    <ImageButton
+                        android:id="@+id/btnHangTimeHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvStayDroppedLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="Stay Dropped:"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/ckStayDropped"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:inputType="number" />
+
+                    <ImageButton
+                        android:id="@+id/btnStayDroppedHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnToSliderMode"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="75dp"
+                    android:text="@string/slider_mode" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnUpdate"
+            android:layout_gravity="bottom"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            android:layout_margin="32dp"
+            android:text="@string/update"
+            android:textColor="?android:textColorPrimary"
+            android:gravity="center"
+            />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnDrop"
+            android:layout_gravity="bottom"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_margin="32dp"
+            app:backgroundTint="?colorPrimaryVariant"
+            android:text="@string/drop_spider"
+            android:textColor="?android:textColorPrimary"
+            android:gravity="center"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

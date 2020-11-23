@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="iconLineColor">#433B30</color>
     <color name="iconBgColor">#222222</color>
+    <color name="spiderDropTextColor">#C62828</color>
+    <color name="spiderRetractingTextColor">#AED581</color>
+    <color name="spiderRetractedTextColor">#558B2F</color>
+    <color name="spiderRetractColor">#558B2F</color>
+    <color name="spiderRetractingColor">#424242</color>
+    <color name="spiderDropColor">#C62828</color>
 </resources>

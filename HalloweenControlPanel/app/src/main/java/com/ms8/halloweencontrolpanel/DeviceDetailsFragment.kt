@@ -1,30 +1,53 @@
 package com.ms8.halloweencontrolpanel
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.FrameLayout
-import android.widget.SeekBar
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.ms8.halloweencontrolpanel.database.FirebaseDao
 import com.ms8.halloweencontrolpanel.database.objects.Device
 import com.ms8.halloweencontrolpanel.database.objects.LanternDevice
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice
 import com.ms8.halloweencontrolpanel.databinding.ContentLanternControlsBinding
 import com.ms8.halloweencontrolpanel.databinding.ContentLanternControlsV2Binding
+import com.ms8.halloweencontrolpanel.databinding.ContentSpiderDropControlsBinding
+import com.ms8.halloweencontrolpanel.databinding.ContentSpiderDropControlsV2Binding
+import kotlinx.android.synthetic.main.content_spider_drop_controls.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class DeviceDetailsFragment : Fragment() {
-    var mode = PRECISION
+    private var spiderBtn: ExtendedFloatingActionButton? = null
+    private var spiderStateTextView: TextView? = null
 
+    private val spiderStateListener: ValueEventListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            if (snapshot.value is String) {
+                val newSate = SpiderDropDevice.Companion.STATE.valueOf(snapshot.value as String)
+                (device as SpiderDropDevice).spiderState = newSate
+                setupSpiderBtnDrop()
+                setupSpiderStateTv()
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {}
+    }
+
+    var mode = PRECISION
     lateinit var device: Device
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -45,35 +68,224 @@ class DeviceDetailsFragment : Fragment() {
             ?: throw Exception("Unable to retrieve details for device ${arguments?.getString("DeviceUID")}")
 
         when (device.groupName) {
-            LanternDevice.GroupName -> {
-                when (mode) {
-                    PRECISION -> setupLanternDetailsWithEditTexts(rootView, inflater)
-                    SLIDER -> setupLanternDetailsWithSliders(rootView, inflater)
-                    else -> throw Exception("DeviceDetailsFragment: onCreateView - Unknown mode value: $mode")
-                }
-            }
-            else -> {
+            LanternDevice.GroupName -> setupLanternLayout(rootView, inflater)
+            SpiderDropDevice.GroupName -> setupSpiderLayout(rootView, inflater)
+                    .also { FirebaseDao.listenToValue(SpiderDropDevice.SPIDER_STATE, device.uid, spiderStateListener) }
+            else ->
                 throw Exception("Unknown device type ${arguments?.get("DeviceType")}. Can't handle fragment inner view!")
-            }
         }
 
         return rootView
     }
 
-    private fun onHelpButtonClicked(id: Int) {
-        val helpDesc = when (id) {
-            R.id.btnDropDelayHelp -> getString(R.string.lanternDropDelayDesc)
-            R.id.btnDropValueHelp -> getString(R.string.lanternDropValueDesc)
-            R.id.btnRampDelayHelp -> getString(R.string.lanternFlickerRateDesc)
-            R.id.btnMinBrightnessHelp -> getString(R.string.lanternMinBrightnessDesc)
-            R.id.btnMaxBrightnessHelp -> getString(R.string.lanternMaxBrightnessDesc)
-            R.id.btnPinHelp -> getString(R.string.lanternPinDesc)
-            R.id.btnNameHelp -> getString(R.string.lanternNameDesc)
-            R.id.btnSmoothingHelp -> getString(R.string.lanternSmoothingDesc)
-            R.id.btnFlickerDelayMinHelp -> getString(R.string.lanternFlickerDelayMinDesc)
-            R.id.btnFlickerDelayMaxHelp -> getString(R.string.lanternFlickerDelayMaxDesc)
-            else -> ""
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        when (device.groupName) {
+            SpiderDropDevice.GroupName -> FirebaseDao.stopListeningToValue(SpiderDropDevice.SPIDER_STATE, device.uid, spiderStateListener)
         }
+    }
+
+    private fun setupSpiderLayout(rootView: View, inflater: LayoutInflater) {
+        when (mode) {
+            PRECISION -> setupSpiderDetailsWithEditTexts(rootView, inflater)
+            SLIDER -> setupSpiderDetailsWithSliders(rootView, inflater)
+        }
+    }
+
+    private fun setupSpiderStateTv() {
+        (device as SpiderDropDevice).let { sDevice ->
+            spiderStateTextView?.let { tvStateVal ->
+                tvStateVal.text = sDevice.spiderState.name
+                tvStateVal.setTextColor(
+                        when (sDevice.spiderState) {
+                            SpiderDropDevice.Companion.STATE.DROPPED -> ContextCompat.getColor(requireContext(), R.color.spiderDropTextColor)
+                            SpiderDropDevice.Companion.STATE.RETRACTING -> ContextCompat.getColor(requireContext(), R.color.spiderRetractingTextColor)
+                            SpiderDropDevice.Companion.STATE.RETRACTED -> ContextCompat.getColor(requireContext(), R.color.spiderRetractedTextColor)
+                        }
+                )
+            }
+        }
+    }
+
+    private fun setupSpiderBtnDrop() {
+        (device as SpiderDropDevice).let { sDevice->
+            spiderBtn?.let {btnDrop ->
+                btnDrop.backgroundTintList = when (sDevice.spiderState) {
+                    SpiderDropDevice.Companion.STATE.DROPPED -> ContextCompat.getColorStateList(requireContext(), R.color.spiderRetractColor)
+                    SpiderDropDevice.Companion.STATE.RETRACTING -> ContextCompat.getColorStateList(requireContext(), R.color.spiderRetractingColor)
+                    SpiderDropDevice.Companion.STATE.RETRACTED -> ContextCompat.getColorStateList(requireContext(), R.color.spiderDropColor)
+                }
+                btnDrop.text = when (sDevice.spiderState) {
+                    SpiderDropDevice.Companion.STATE.DROPPED -> requireContext().getString(R.string.retract_spider)
+                    SpiderDropDevice.Companion.STATE.RETRACTING -> requireContext().getString(R.string.retracting_btn_text)
+                    SpiderDropDevice.Companion.STATE.RETRACTED -> requireContext().getString(R.string.drop_spider)
+                }
+            }
+        }
+    }
+
+    private fun setupSpiderDetailsWithSliders(rootView: View, inflater: LayoutInflater) {
+        val frameLayout = rootView.findViewById<FrameLayout>(R.id.detailsContainer)
+        val spiderControlsBinding = ContentSpiderDropControlsV2Binding.inflate(inflater)
+        spiderControlsBinding.apply {
+            (device as SpiderDropDevice).let { sDevice ->
+                // Name
+                etName.setText(sDevice.name)
+
+                // Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnPin.adapter = adapter
+                }
+                spnPin.setSelection(posFromPin(device.pin))
+
+                // Hang Time
+                val hangTimeStepSize = 100
+                tvHangTimeVal.text = sDevice.hangTime.toString()
+                skHangTime.progress = sDevice.hangTime
+                skHangTime.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        if (fromUser)
+                            seekBar?.progress = (progress/hangTimeStepSize)*hangTimeStepSize
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+                })
+
+                // Stay Dropped
+                ckStayDropped.isChecked = sDevice.stayDropped
+                ckStayDropped.setOnCheckedChangeListener { _, isChecked ->
+                    skHangTime.isEnabled = isChecked
+                    tvHangTimeLabel.isEnabled = isChecked
+                    tvHangTimeVal.isEnabled = isChecked
+                }
+
+                // Help Buttons
+                btnHangTimeHelp.setOnClickListener { onHelpButtonClicked(R.id.btnHangTimeHelp) }
+                btnNameHelp.setOnClickListener { onHelpButtonClicked(R.id.btnNameHelp) }
+                btnStayDroppedHelp.setOnClickListener { onHelpButtonClicked(R.id.btnStayDroppedHelp) }
+
+                // State
+                spiderStateTextView = tvStateVal
+                setupSpiderStateTv()
+
+                // Spider Action Button
+                spiderBtn = btnDrop
+                setupSpiderBtnDrop()
+                btnDrop.setOnClickListener {
+                    when (sDevice.spiderState) {
+                        SpiderDropDevice.Companion.STATE.DROPPED -> FirebaseDao.sendCommand("RETRACT", sDevice.uid)
+                        SpiderDropDevice.Companion.STATE.RETRACTING -> Snackbar.make(rootView, R.string.err_spider_retracting, Snackbar.LENGTH_LONG).show()
+                        SpiderDropDevice.Companion.STATE.RETRACTED -> FirebaseDao.sendCommand("DROP", sDevice.uid)
+                    }
+                }
+
+                // Update Button
+                btnUpdate.setOnClickListener {
+                    sDevice.name = etName.text.toString()
+                    sDevice.hangTime = skHangTime.progress
+                    sDevice.stayDropped = ckStayDropped.isChecked
+                    sDevice.pin = pinFromPos(spnPin.selectedItemPosition, true)
+
+                    FirebaseDao.updateDevice(sDevice)
+                }
+
+                // Change Layout Type Button
+                btnChangeToPreciseMode.setOnClickListener {
+                    mode = PRECISION
+                    frameLayout.removeAllViews()
+                    setupSpiderDetailsWithEditTexts(rootView, inflater)
+                }
+            }
+        }
+    }
+
+    private fun setupSpiderDetailsWithEditTexts(rootView: View, inflater: LayoutInflater) {
+        val frameLayout = rootView.findViewById<FrameLayout>(R.id.detailsContainer)
+        val spiderControlsBinding = ContentSpiderDropControlsBinding.inflate(inflater)
+        spiderControlsBinding.apply {
+            (device as SpiderDropDevice).let { sDevice ->
+                // Name
+                etName.setText(sDevice.name)
+
+                // Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnPin.adapter = adapter
+                }
+                spnPin.setSelection(posFromPin(device.pin))
+
+                // Hang Time
+                etHangTime.setText(sDevice.hangTime.toString())
+
+                // Stay Dropped
+                ckStayDropped.isChecked = sDevice.stayDropped
+                ckStayDropped.setOnCheckedChangeListener { _, isChecked ->
+                    tvHangTimeLabel.isEnabled = isChecked
+                    etHangTime.isEnabled = isChecked
+                }
+
+                // Help Buttons
+                btnHangTimeHelp.setOnClickListener { onHelpButtonClicked(R.id.btnHangTimeHelp) }
+                btnNameHelp.setOnClickListener { onHelpButtonClicked(R.id.btnNameHelp) }
+                btnStayDroppedHelp.setOnClickListener { onHelpButtonClicked(R.id.btnStayDroppedHelp) }
+
+                // State
+                spiderStateTextView = tvStateVal
+                setupSpiderStateTv()
+
+                // Spider Action Button
+                spiderBtn = btnDrop
+                setupSpiderBtnDrop()
+                btnDrop.setOnClickListener {
+                    when (sDevice.spiderState) {
+                        SpiderDropDevice.Companion.STATE.DROPPED -> FirebaseDao.sendCommand("RETRACT", sDevice.uid)
+                        SpiderDropDevice.Companion.STATE.RETRACTING -> Snackbar.make(rootView, R.string.err_spider_retracting, Snackbar.LENGTH_LONG).show()
+                        SpiderDropDevice.Companion.STATE.RETRACTED -> FirebaseDao.sendCommand("DROP", sDevice.uid)
+                    }
+                }
+
+                // Update Button
+                btnUpdate.setOnClickListener {
+                    sDevice.name = etName.text.toString()
+                    sDevice.hangTime = etHangTime.text.toString().toInt()
+                    sDevice.stayDropped = ckStayDropped.isChecked
+                    sDevice.pin = pinFromPos(spnPin.selectedItemPosition, true)
+
+                    FirebaseDao.updateDevice(sDevice)
+                }
+
+                // Change Layout Type Button
+                btnToSliderMode.setOnClickListener {
+                    mode = SLIDER
+                    frameLayout.removeAllViews()
+                    setupSpiderDetailsWithSliders(rootView, inflater)
+                }
+            }
+        }
+    }
+
+    private fun setupLanternLayout(rootView: View, inflater: LayoutInflater) {
+        when (mode) {
+            PRECISION -> setupLanternDetailsWithEditTexts(rootView, inflater)
+            SLIDER -> setupLanternDetailsWithSliders(rootView, inflater)
+            else -> throw Exception("DeviceDetailsFragment: onCreateView - Unknown mode value: $mode")
+        }
+    }
+
+    private fun onHelpButtonClicked(id: Int) {
+        val helpDesc = device.getVariableDescription(requireContext(), id)
 
         AlertDialog.Builder(requireContext())
                 .setTitle(R.string.help_title)
@@ -277,6 +489,8 @@ class DeviceDetailsFragment : Fragment() {
     }
 
     private fun posFromPin(pin: Int): Int {
+        if (pin == Device.PIN_A0)
+            return 0
         resources.getStringArray(R.array.pin_values).forEachIndexed { index, pinStr ->
             if (pinStr.toInt() == pin)
                 return index
@@ -301,7 +515,12 @@ class DeviceDetailsFragment : Fragment() {
         findNavController().navigate(R.id.action_ControlFragment_to_DevicesFragment)
     }
 
-    private fun pinFromPos(position: Int) = resources.getStringArray(R.array.pin_values)[position].toInt()
+    private fun pinFromPos(position: Int, includeDefinedPins: Boolean = false): Int {
+        return if (includeDefinedPins)
+            resources.getStringArray(R.array.pin_values_all)[position].toInt()
+         else
+            resources.getStringArray(R.array.pin_values)[position].toInt()
+    }
 
 
     companion object {
