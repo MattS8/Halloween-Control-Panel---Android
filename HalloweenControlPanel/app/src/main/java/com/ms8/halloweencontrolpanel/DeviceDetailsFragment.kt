@@ -133,16 +133,60 @@ class DeviceDetailsFragment : Fragment() {
                 // Name
                 etName.setText(sDevice.name)
 
-                // Pin
+                // Drop Pin
                 ArrayAdapter.createFromResource(
                         this@DeviceDetailsFragment.requireContext(),
                         R.array.pin_values_all,
                         android.R.layout.simple_spinner_item
                 ).also { adapter ->
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spnPin.adapter = adapter
+                    spnDropPin.adapter = adapter
                 }
-                spnPin.setSelection(posFromPin(device.pin))
+                spnDropPin.setSelection(posFromPin(sDevice.pin))
+
+                // Drop Motor Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnDropMotorPin.adapter = adapter
+                }
+                spnDropMotorPin.setSelection(posFromPin(sDevice.dropMotorPin))
+
+                // Current Sense Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnCurrentSense.adapter = adapter
+                }
+                spnCurrentSense.setSelection(posFromPin(sDevice.currentSensePin))
+
+                // Retract Motor Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnRetractMotor.adapter = adapter
+                }
+                spnRetractMotor.setSelection(posFromPin(sDevice.retractMotorPin))
+
+                // Drop Stop Switch Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnDropStopSwitch.adapter = adapter
+                }
+                spnDropStopSwitch.setSelection(posFromPin(sDevice.dropStopSwitchPin))
 
                 // Hang Time
                 val hangTimeStepSize = 100
@@ -152,11 +196,35 @@ class DeviceDetailsFragment : Fragment() {
                     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                         if (fromUser)
                             seekBar?.progress = (progress/hangTimeStepSize)*hangTimeStepSize
+                        tvHangTimeVal.text = seekBar?.progress?.toString()
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                })
 
+                // Current Pulse Delay
+                tvCurrentPulseDelayVal.text = sDevice.currentPulseDelay.toString()
+                skCurrentPulseDelay.progress = sDevice.currentPulseDelay
+                skCurrentPulseDelay.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                            tvCurrentPulseDelayVal.text = progress.toString()
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                })
+
+                // Current Limit
+                tvCurrentLimitVal.text = sDevice.currentLimit.toString()
+                skCurrentLimit.progress = sDevice.currentPulseDelay
+                skCurrentLimit.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        tvCurrentLimitVal.text = progress.toString()
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
                 })
 
                 // Stay Dropped
@@ -171,6 +239,13 @@ class DeviceDetailsFragment : Fragment() {
                 btnHangTimeHelp.setOnClickListener { onHelpButtonClicked(R.id.btnHangTimeHelp) }
                 btnNameHelp.setOnClickListener { onHelpButtonClicked(R.id.btnNameHelp) }
                 btnStayDroppedHelp.setOnClickListener { onHelpButtonClicked(R.id.btnStayDroppedHelp) }
+                btnDropPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnDropPinHelp) }
+                btnDropMotorPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnDropMotorPinHelp) }
+                btnCurrentSensePinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnCurrentSensePinHelp) }
+                btnRetractMotorPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnRetractMotorPinHelp) }
+                btnDropStopSwitchPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnDropStopSwitchPinHelp) }
+                btnCurrentPulseDelayHelp.setOnClickListener { onHelpButtonClicked(R.id.btnCurrentPulseDelayHelp) }
+                btnCurrentLimitHelp.setOnClickListener { onHelpButtonClicked(R.id.btnCurrentLimitHelp) }
 
                 // State
                 spiderStateTextView = tvStateVal
@@ -181,9 +256,9 @@ class DeviceDetailsFragment : Fragment() {
                 setupSpiderBtnDrop()
                 btnDrop.setOnClickListener {
                     when (sDevice.spiderState) {
-                        SpiderDropDevice.Companion.STATE.DROPPED -> FirebaseDao.sendCommand("RETRACT", sDevice.uid)
+                        SpiderDropDevice.Companion.STATE.DROPPED -> FirebaseDao.updateDevice(sDevice.uid, sDevice.getFirebaseObject().apply { put("command", "RETRACT") })
                         SpiderDropDevice.Companion.STATE.RETRACTING -> Snackbar.make(rootView, R.string.err_spider_retracting, Snackbar.LENGTH_LONG).show()
-                        SpiderDropDevice.Companion.STATE.RETRACTED -> FirebaseDao.sendCommand("DROP", sDevice.uid)
+                        SpiderDropDevice.Companion.STATE.RETRACTED -> FirebaseDao.updateDevice(sDevice.uid, sDevice.getFirebaseObject().apply { put("command", "DROP") })
                     }
                 }
 
@@ -192,7 +267,13 @@ class DeviceDetailsFragment : Fragment() {
                     sDevice.name = etName.text.toString()
                     sDevice.hangTime = skHangTime.progress
                     sDevice.stayDropped = ckStayDropped.isChecked
-                    sDevice.pin = pinFromPos(spnPin.selectedItemPosition, true)
+                    sDevice.pin = pinFromPos(spnDropPin.selectedItemPosition, true)
+                    sDevice.dropMotorPin = pinFromPos(spnDropMotorPin.selectedItemPosition, true)
+                    sDevice.currentSensePin = pinFromPos(spnCurrentSense.selectedItemPosition, true)
+                    sDevice.retractMotorPin = pinFromPos(spnRetractMotor.selectedItemPosition, true)
+                    sDevice.dropStopSwitchPin = pinFromPos(spnDropStopSwitch.selectedItemPosition, true)
+                    sDevice.currentPulseDelay = skCurrentPulseDelay.progress
+                    sDevice.currentLimit = skCurrentLimit.progress
 
                     FirebaseDao.updateDevice(sDevice)
                 }
@@ -215,19 +296,69 @@ class DeviceDetailsFragment : Fragment() {
                 // Name
                 etName.setText(sDevice.name)
 
-                // Pin
+                // Drop Pin
                 ArrayAdapter.createFromResource(
                         this@DeviceDetailsFragment.requireContext(),
                         R.array.pin_values_all,
                         android.R.layout.simple_spinner_item
                 ).also { adapter ->
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spnPin.adapter = adapter
+                    spnDropPin.adapter = adapter
                 }
-                spnPin.setSelection(posFromPin(device.pin))
+                spnDropPin.setSelection(posFromPin(sDevice.pin))
+
+                // Drop Motor Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnDropMotorPin.adapter = adapter
+                }
+                spnDropMotorPin.setSelection(posFromPin(sDevice.dropMotorPin))
+
+                // Current Sense Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnCurrentSense.adapter = adapter
+                }
+                spnCurrentSense.setSelection(posFromPin(sDevice.currentSensePin))
+
+                // Retract Motor Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnRetractMotor.adapter = adapter
+                }
+                spnRetractMotor.setSelection(posFromPin(sDevice.retractMotorPin))
+
+                // Drop Stop Switch Pin
+                ArrayAdapter.createFromResource(
+                        this@DeviceDetailsFragment.requireContext(),
+                        R.array.pin_values_all,
+                        android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spnDropStopSwitch.adapter = adapter
+                }
+                spnDropStopSwitch.setSelection(posFromPin(sDevice.dropStopSwitchPin))
 
                 // Hang Time
                 etHangTime.setText(sDevice.hangTime.toString())
+
+                // Current Pulse Delay
+                etCurrentPulseDelay.setText(sDevice.currentPulseDelay.toString())
+
+                // Current Limit
+                etCurrentLimit.setText(sDevice.currentLimit.toString())
 
                 // Stay Dropped
                 ckStayDropped.isChecked = sDevice.stayDropped
@@ -240,6 +371,13 @@ class DeviceDetailsFragment : Fragment() {
                 btnHangTimeHelp.setOnClickListener { onHelpButtonClicked(R.id.btnHangTimeHelp) }
                 btnNameHelp.setOnClickListener { onHelpButtonClicked(R.id.btnNameHelp) }
                 btnStayDroppedHelp.setOnClickListener { onHelpButtonClicked(R.id.btnStayDroppedHelp) }
+                btnDropPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnDropPinHelp) }
+                btnDropMotorPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnDropMotorPinHelp) }
+                btnCurrentSensePinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnCurrentSensePinHelp) }
+                btnRetractMotorPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnRetractMotorPinHelp) }
+                btnDropStopSwitchPinHelp.setOnClickListener { onHelpButtonClicked(R.id.btnDropStopSwitchPinHelp) }
+                btnCurrentPulseDelayHelp.setOnClickListener { onHelpButtonClicked(R.id.btnCurrentPulseDelayHelp) }
+                btnCurrentLimitHelp.setOnClickListener { onHelpButtonClicked(R.id.btnCurrentLimitHelp) }
 
                 // State
                 spiderStateTextView = tvStateVal
@@ -261,7 +399,13 @@ class DeviceDetailsFragment : Fragment() {
                     sDevice.name = etName.text.toString()
                     sDevice.hangTime = etHangTime.text.toString().toInt()
                     sDevice.stayDropped = ckStayDropped.isChecked
-                    sDevice.pin = pinFromPos(spnPin.selectedItemPosition, true)
+                    sDevice.pin = pinFromPos(spnDropPin.selectedItemPosition, true)
+                    sDevice.dropMotorPin = pinFromPos(spnDropMotorPin.selectedItemPosition, true)
+                    sDevice.currentSensePin = pinFromPos(spnCurrentSense.selectedItemPosition, true)
+                    sDevice.retractMotorPin = pinFromPos(spnRetractMotor.selectedItemPosition, true)
+                    sDevice.dropStopSwitchPin = pinFromPos(spnDropStopSwitch.selectedItemPosition, true)
+                    sDevice.currentPulseDelay = etCurrentPulseDelay.text.toString().toInt()
+                    sDevice.currentLimit = etCurrentLimit.text.toString().toInt()
 
                     FirebaseDao.updateDevice(sDevice)
                 }

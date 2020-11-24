@@ -49,13 +49,26 @@
     <string name="hanging_time_ms">Hanging Time (ms):</string>
     <string name="drop_spider">Drop Spider</string>
     <string name="spiderDropNameDec">This is the name of the spider dropping device.</string>
-    <string name="spiderDropPinDesc">This value determines which pin to use to control the release and retracting of the spider.</string>
+    <string name="spiderDropPinDesc">This value determines which pin is used to trigger the spider drop.</string>
     <string name="spiderDropHangTimeDesc">This value determines how long the spider will remain in the dropped position before retracting. (Default: 2000)</string>
     <string name="spiderDropStayDroppedDesc">This value determines if the spider should remain in the dropped position indefinitely, regardless of what \'Hang Time\' is set to. NOTE: The only way to retract the spider is via the app. (Default: false)</string>
     <string name="state_label">State:</string>
     <string name="err_spider_retracting">The spider is still retracting. Please Wait.</string>
     <string name="retracting_btn_text">Retracting...</string>
     <string name="retract_spider">Retract Spider</string>
+    <string name="drop_pin_label">Drop Pin:</string>
+    <string name="drop_motor_pin_label">Drop Motor Pin:</string>
+    <string name="current_sense_pin_label">Current Sense Pin:</string>
+    <string name="retract_motor_pin_label">Retract Motor Pin:</string>
+    <string name="spiderDropMotorPinDesc">This value determines which pin is used to control the drop motor.</string>
+    <string name="spiderDropCurrentPinDesc">This value determines which pin is used to sense the current on the motor.</string>
+    <string name="spiderDropRetractPinDesc">This value determines which pin is used to control the retract motor.</string>
+    <string name="drop_stop_switch_pin_label">Drop Stop Switch Pin:</string>
+    <string name="spiderDropStopSwitchPinDesc">This value determines which pin is used to monitor the status of the drop motor switch.</string>
+    <string name="current_pulse_delay_label">Current Pulse Delay (ms):</string>
+    <string name="spiderDropCurrentPulseDelayDesc">This value controls how long it takes for the motor to start/stop.</string>
+    <string name="current_limit_label">Current Limit:</string>
+    <string name="spiderDropCurrentLimitDesc">This value determines how much current resistance is needed to stop the motor.</string>
 
     <string-array name="pin_values">
         <item>1</item>

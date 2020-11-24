@@ -123,15 +123,15 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tvPinLabel"
+                        android:id="@+id/tvDropPinLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/pin_label"
+                        android:text="@string/drop_pin_label"
                         android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
 
                     <Spinner
-                        android:id="@+id/spnPin"
+                        android:id="@+id/spnDropPin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -139,13 +139,243 @@
                         android:minWidth="150dp" />
 
                     <ImageButton
-                        android:id="@+id/btnPinHelp"
+                        android:id="@+id/btnDropPinHelp"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
                         android:background="?selectableItemBackground"
                         android:contentDescription="@string/pin_help"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvDropMotorPinLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/drop_motor_pin_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <Spinner
+                        android:id="@+id/spnDropMotorPin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:minWidth="150dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnDropMotorPinHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        android:contentDescription="@string/pin_help"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCurrentSensePinLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/current_sense_pin_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <Spinner
+                        android:id="@+id/spnCurrentSense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:minWidth="150dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCurrentSensePinHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        android:contentDescription="@string/pin_help"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvRetractMotorPinLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/retract_motor_pin_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <Spinner
+                        android:id="@+id/spnRetractMotor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:minWidth="150dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnRetractMotorPinHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        android:contentDescription="@string/pin_help"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvDropStopSwitchPinLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/drop_stop_switch_pin_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <Spinner
+                        android:id="@+id/spnDropStopSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:minWidth="150dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnDropStopSwitchPinHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        android:contentDescription="@string/pin_help"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCurrentPulseDelayLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/current_pulse_delay_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <EditText
+                        android:id="@+id/etCurrentPulseDelay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="number" />
+
+                    <ImageButton
+                        android:id="@+id/btnCurrentPulseDelayHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
+                        app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/list_edge_margin"
+                    android:layout_marginLeft="@dimen/list_edge_margin"
+                    android:layout_marginEnd="@dimen/list_edge_margin"
+                    android:layout_marginRight="@dimen/list_edge_margin"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCurrentLimitLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/current_limit_label"
+                        android:textAppearance="@style/AppTheme.TextAppearance.SubHeader" />
+
+                    <EditText
+                        android:id="@+id/etCurrentLimit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="number" />
+
+                    <ImageButton
+                        android:id="@+id/btnCurrentLimitHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="?selectableItemBackground"
                         app:srcCompat="@drawable/ic_baseline_help_outline_24" />
 
                 </LinearLayout>

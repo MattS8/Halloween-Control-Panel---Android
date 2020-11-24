@@ -9,6 +9,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.ms8.halloweencontrolpanel.database.objects.Device
 import com.ms8.halloweencontrolpanel.database.objects.LanternDevice
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.CURRENT_SENSE_PIN
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.DROP_MOTOR_PIN
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.HANG_TIME
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.RETRACT_MOTOR_PIN
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.SPIDER_STATE
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.STAY_DROPPED
 import kotlin.Exception
 
 object FirebaseDao {
@@ -46,6 +53,11 @@ object FirebaseDao {
     fun updateDevice(device: Device) {
         FirebaseDatabase.getInstance().getReference("devices").child(device.uid)
                 .setValue(device.getFirebaseObject())
+    }
+
+    fun updateDevice(uid: String, map: MutableMap<String, Any?>) {
+        FirebaseDatabase.getInstance().getReference("devices").child(uid)
+                .setValue(map)
     }
 
     fun listenForDevices(callback: DeviceListCallback?) {
@@ -94,7 +106,8 @@ object FirebaseDao {
                 try {
                     val mapVal = deviceSnapshot.value as Map<*, *>
                     when (mapVal["groupName"]) {
-                        LanternDevice.GroupName -> {
+                        LanternDevice.GroupName ->
+                        {
                             val name = mapVal["name"] as String
                             val uid = deviceSnapshot.key ?: throw Exception("Invalid uid")
 
@@ -112,6 +125,27 @@ object FirebaseDao {
                                         (mapVal[LanternDevice.DROP_VALUE] as Number).toInt(),
                                         (mapVal[LanternDevice.FLICKER_DELAY_MIN] as Number).toInt(),
                                         (mapVal[LanternDevice.FLICKER_DELAY_MAX] as Number).toInt()
+                                            )
+                            )
+                        }
+
+                        SpiderDropDevice.GroupName ->
+                        {
+                            val name = mapVal["name"] as String
+                            val uid = deviceSnapshot.key ?: throw Exception("Invalid uid")
+
+                            if (!newMap.containsKey(SpiderDropDevice.GroupName))
+                                newMap[SpiderDropDevice.GroupName] = ArrayList()
+
+                            newMap[SpiderDropDevice.GroupName]?.add(
+                                    SpiderDropDevice(name, uid,
+                                            (mapVal[Device.PIN] as Number).toInt(),
+                                            (mapVal[HANG_TIME] as Number).toInt(),
+                                            SpiderDropDevice.Companion.STATE.valueOf(mapVal[SPIDER_STATE] as String),
+                                            (mapVal[STAY_DROPPED] as Boolean),
+                                            (mapVal[DROP_MOTOR_PIN] as Number).toInt(),
+                                            (mapVal[CURRENT_SENSE_PIN] as Number).toInt(),
+                                            (mapVal[RETRACT_MOTOR_PIN] as Number).toInt()
                                             )
                             )
                         }
