@@ -16,14 +16,16 @@ class SpiderDropDevice (
         var retractMotorPin: Int = 4,
         var dropStopSwitchPin: Int = 12,
         var currentPulseDelay: Int = 250,
-        var currentLimit:Int = 200
+        var currentLimit:Int = 200,
+        var dropMotorDelay:Int = 1500,
+        var upLimitSwitchPin:Int = 2
 ) : Device(name, GroupName, uid, pin) {
 
     override fun getFirebaseObject(): MutableMap<String, Any?> {
         val returnMap = super.getFirebaseObject()
 
         returnMap[HANG_TIME] = hangTime
-        returnMap[SPIDER_STATE] = spiderState.name /* The app should not directly control the state of the device! */
+        //returnMap[SPIDER_STATE] = spiderState.name /* The app should not directly control the state of the device! */
         returnMap[STAY_DROPPED] = stayDropped
         returnMap[DROP_MOTOR_PIN] = dropMotorPin
         returnMap[CURRENT_SENSE_PIN] = currentSensePin
@@ -31,8 +33,14 @@ class SpiderDropDevice (
         returnMap[DROP_STOP_SWITCH_PIN] = dropStopSwitchPin
         returnMap[CURRENT_PULSE_DELAY] = currentPulseDelay
         returnMap[CURRENT_LIMIT] = currentLimit
+        returnMap[DROP_MOTOR_DELAY] = dropMotorDelay
+        returnMap[UP_LIMIT_SWITCH_PIN] = upLimitSwitchPin
 
         return returnMap
+    }
+
+    override fun getState(): String {
+        return spiderState.name
     }
 
     override fun getVariableDescription(context: Context, id: Int): String {
@@ -47,9 +55,16 @@ class SpiderDropDevice (
             R.id.btnDropStopSwitchPinHelp -> context.getString(R.string.spiderDropStopSwitchPinDesc)
             R.id.btnCurrentPulseDelayHelp -> context.getString(R.string.spiderDropCurrentPulseDelayDesc)
             R.id.btnCurrentLimitHelp -> context.getString(R.string.spiderDropCurrentLimitDesc)
+            R.id.btnDropMotorDelayHelp -> context.getString(R.string.spiderDropMoterDelayDesc)
+            R.id.btnUpLimitSwitchPinHelp -> context.getString(R.string.spiderDropUpLimitSwitchPinDesc)
 
             else -> super.getVariableDescription(context, id)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other) && other is SpiderDropDevice
+                && other.spiderState == spiderState
     }
 
     companion object {
@@ -64,6 +79,8 @@ class SpiderDropDevice (
         const val DROP_STOP_SWITCH_PIN = "dropStopSwitchPin"
         const val CURRENT_PULSE_DELAY = "currentPulseDelay"
         const val CURRENT_LIMIT = "currentLimit"
+        const val DROP_MOTOR_DELAY = "dropMotorDelay"
+        const val UP_LIMIT_SWITCH_PIN = "upLimitSwitchPin"
 
         enum class STATE {DROPPED, RETRACTING, RETRACTED}
     }

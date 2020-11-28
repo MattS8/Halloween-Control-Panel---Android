@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.PI
 
 @Entity(tableName = "devices_table")
 open class Device(
@@ -32,6 +33,7 @@ open class Device(
        }
 
         return map.apply {
+            put(PIN, pin)
             put(NAME, name)
             put(GROUP_NAME, groupName)
             put(LAST_UPDATED, SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time))
@@ -40,6 +42,11 @@ open class Device(
 
     open fun getVariableDescription(context: Context, id: Int) : String = ""
 
+    open fun getState() : String = state.name
+
+    override fun equals(other: Any?): Boolean {
+        return other is Device && other.uid == uid
+    }
 
     companion object {
         const val NAME = "name"

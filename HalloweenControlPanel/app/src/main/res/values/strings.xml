@@ -69,6 +69,15 @@
     <string name="spiderDropCurrentPulseDelayDesc">This value controls how long it takes for the motor to start/stop.</string>
     <string name="current_limit_label">Current Limit:</string>
     <string name="spiderDropCurrentLimitDesc">This value determines how much current resistance is needed to stop the motor.</string>
+    <string name="stay_dropped">Stay Dropped:</string>
+    <string name="drop_motor_delay_label">Drop Motor Delay (ms):</string>
+    <string name="spiderDropMoterDelayDesc">This value determines how long to wait before drop motor shuts off after receiving such a command from the arduino.</string>
+    <string name="drop_anyway">Drop Anyway</string>
+    <string name="show_pins">Show Pins</string>
+    <string name="hide_pins">Hide Pins</string>
+    <string name="spiderDropUpLimitSwitchPinDesc">This value determines which pin is used to tell if the spider is retracted all the way.</string>
+    <string name="up_limit_switch_pin_label">Up Limit Switch Pin:</string>
+    <string name="pin_number_label">Pin #:</string>
 
     <string-array name="pin_values">
         <item>1</item>
@@ -91,5 +100,12 @@
         <item>6</item>
         <item>7</item>
         <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
     </string-array>
 </resources>

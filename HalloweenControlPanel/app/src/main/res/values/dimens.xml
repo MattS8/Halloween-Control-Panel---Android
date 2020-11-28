@@ -1,4 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_edge_margin">16dp</dimen>
+    <dimen name="bottom_scroll_margin">100dp</dimen>
+    <dimen name="dimen_list_vertical_spacing">24dp</dimen>
 </resources>

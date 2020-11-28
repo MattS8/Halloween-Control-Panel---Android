@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ms8.halloweencontrolpanel.R
 import com.ms8.halloweencontrolpanel.database.objects.Device
+import com.ms8.halloweencontrolpanel.database.objects.LanternDevice
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice
+import org.w3c.dom.Text
 
 
 class DevicesAdapter(val deviceClickListener: DeviceClickListener,
@@ -109,13 +112,42 @@ class DevicesAdapter(val deviceClickListener: DeviceClickListener,
         fun bind(device: Device, listener: DeviceClickListener) {
             itemView.findViewById<TextView>(R.id.tvDeviceName).text = device.name
             itemView.setOnClickListener { listener.onClick(device) }
+            when (device.groupName) {
+                LanternDevice.GroupName -> {
+                    itemView.findViewById<ImageView>(R.id.imgDeviceImg).apply {
+                        visibility = View.VISIBLE
+                        setImageResource(R.drawable.ic_lantern)
+                    }
+                    itemView.findViewById<TextView>(R.id.tvState).apply {
+                        text = device.getState()
+                    }
+                }
+                SpiderDropDevice.GroupName -> {
+                    itemView.findViewById<ImageView>(R.id.imgDeviceImg).apply {
+                        visibility = View.VISIBLE
+                        setImageResource(R.drawable.ic_spiderhang_optimized)
+                    }
+                    itemView.findViewById<TextView>(R.id.tvState).apply {
+                        text = device.getState()
+                    }
+                }
+                else -> {
+                    itemView.findViewById<ImageView>(R.id.imgDeviceImg).apply {
+                        visibility = View.INVISIBLE
+                        //setImageResource(R.drawable.ic_spiderhang_optimized)
+                    }
+                    itemView.findViewById<TextView>(R.id.tvState).apply {
+                        text = device.getState()
+                    }
+                }
+            }
         }
 
         companion object {
             fun from(parent: ViewGroup) : DeviceViewHolder {
                 return DeviceViewHolder(
                     LayoutInflater.from(parent.context).inflate(
-                        R.layout.itm_device,
+                        R.layout.itm_device_compact,
                         parent,
                         false
                     )
@@ -168,7 +200,12 @@ class DevicesAdapter(val deviceClickListener: DeviceClickListener,
         }
 
         override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem == newItem
+            return when (oldItem) {
+                is DataItem.DeviceItem -> {
+                    newItem is DataItem.DeviceItem && oldItem.deviceInfo == newItem.deviceInfo
+                }
+                else -> oldItem == newItem
+            }
         }
     }
 

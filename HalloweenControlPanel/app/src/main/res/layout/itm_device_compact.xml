@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:background="?selectableItemBackground"
+    >
+
+    <ImageView
+        android:id="@+id/imgDeviceImg"
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        tools:srcCompat="@drawable/ic_spiderhang_optimized"
+        android:scaleType="fitCenter"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        />
+
+    <TextView
+        android:id="@+id/tvDeviceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textAppearance="@style/Base.V0.TextAppearance.SubHeader"
+        tools:text="Device Name"
+        app:layout_constraintStart_toEndOf="@id/imgDeviceImg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginEnd="@dimen/list_edge_margin"
+        android:layout_marginRight="@dimen/list_edge_margin"
+        />
+
+    <TextView
+        android:id="@+id/tvState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginStart="@dimen/list_edge_margin"
+        android:layout_marginLeft="@dimen/list_edge_margin"
+        android:layout_marginEnd="@dimen/list_edge_margin"
+        android:layout_marginRight="@dimen/list_edge_margin"
+        android:textAppearance="@style/Base.V0.TextAppearance.SubHeader"
+        android:textColor="#D8D8D8"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/tvDeviceName"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:text="ON" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

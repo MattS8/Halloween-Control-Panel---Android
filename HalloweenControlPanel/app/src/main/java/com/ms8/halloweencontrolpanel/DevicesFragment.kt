@@ -69,7 +69,7 @@ class DevicesFragment : Fragment(), DevicesAdapter.DeviceClickListener, DevicesA
             override fun getSpanSize(position: Int): Int {
                 return when ((binding.rvDevices.adapter as DevicesAdapter).getItemViewType(position)) {
                     TYPE_HEADER -> 2
-                    else -> 1
+                    else -> 2
                 }
             }
         }

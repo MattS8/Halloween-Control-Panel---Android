@@ -10,12 +10,17 @@ import com.google.firebase.database.ValueEventListener
 import com.ms8.halloweencontrolpanel.database.objects.Device
 import com.ms8.halloweencontrolpanel.database.objects.LanternDevice
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.CURRENT_LIMIT
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.CURRENT_PULSE_DELAY
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.CURRENT_SENSE_PIN
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.DROP_MOTOR_DELAY
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.DROP_MOTOR_PIN
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.DROP_STOP_SWITCH_PIN
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.HANG_TIME
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.RETRACT_MOTOR_PIN
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.SPIDER_STATE
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.STAY_DROPPED
+import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice.Companion.UP_LIMIT_SWITCH_PIN
 import kotlin.Exception
 
 object FirebaseDao {
@@ -75,6 +80,11 @@ object FirebaseDao {
         )
     }
 
+    fun listenToState(deviceUID: String, listener: ValueEventListener) {
+        FirebaseDatabase.getInstance().getReference("state").child(deviceUID)
+                .addValueEventListener(listener)
+    }
+
     fun listenToValue(value: String, deviceUID: String, listener: ValueEventListener) {
         FirebaseDatabase.getInstance().getReference("devices").child(deviceUID)
                 .child(value)
@@ -88,8 +98,11 @@ object FirebaseDao {
     }
 
     fun sendCommand(command: String, deviceUID: String) {
-        FirebaseDatabase.getInstance().getReference("command").child(deviceUID)
-                .setValue(command)
+        FirebaseDatabase.getInstance().getReference("devices").child(deviceUID).child("command")
+                .setValue("_none_").addOnSuccessListener {
+                    FirebaseDatabase.getInstance().getReference("devices").child(deviceUID).child("command")
+                            .setValue(command)
+                }
     }
 
     /* Helper Functions */
@@ -136,18 +149,40 @@ object FirebaseDao {
 
                             if (!newMap.containsKey(SpiderDropDevice.GroupName))
                                 newMap[SpiderDropDevice.GroupName] = ArrayList()
-
+                            Log.d("TEST", "----- HERE")
                             newMap[SpiderDropDevice.GroupName]?.add(
                                     SpiderDropDevice(name, uid,
                                             (mapVal[Device.PIN] as Number).toInt(),
                                             (mapVal[HANG_TIME] as Number).toInt(),
-                                            SpiderDropDevice.Companion.STATE.valueOf(mapVal[SPIDER_STATE] as String),
+                                            SpiderDropDevice.Companion.STATE.RETRACTED,
                                             (mapVal[STAY_DROPPED] as Boolean),
                                             (mapVal[DROP_MOTOR_PIN] as Number).toInt(),
                                             (mapVal[CURRENT_SENSE_PIN] as Number).toInt(),
-                                            (mapVal[RETRACT_MOTOR_PIN] as Number).toInt()
+                                            (mapVal[RETRACT_MOTOR_PIN] as Number).toInt(),
+                                            (mapVal[DROP_STOP_SWITCH_PIN] as Number).toInt(),
+                                            (mapVal[CURRENT_PULSE_DELAY] as Number).toInt(),
+                                            (mapVal[CURRENT_LIMIT] as Number).toInt(),
+                                            (mapVal[DROP_MOTOR_DELAY] as Number).toInt(),
+                                            (mapVal[UP_LIMIT_SWITCH_PIN] as Number).toInt()
                                             )
                             )
+                            FirebaseDatabase.getInstance().getReference("state").child(uid)
+                                    .addValueEventListener(object : ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            if (snapshot.value is String) {
+                                                newMap[SpiderDropDevice.GroupName]?.forEach { device ->
+                                                    if (device.uid == uid) {
+                                                        (device as SpiderDropDevice).spiderState = SpiderDropDevice.Companion.STATE.valueOf(snapshot.value as String)
+                                                        devices.notifyChange()
+                                                    }
+                                                }
+                                            } else {
+                                                Log.e("GetSpiderState", "State wasn't a string")
+                                            }
+                                        }
+                                        override fun onCancelled(error: DatabaseError) {}
+                                    })
+                            Log.d("TEST", "dropPin = ${(mapVal[Device.PIN] as Number).toInt()}")
                         }
                         else -> throw Exception("Unknown device group: ${mapVal["groupName"]}")
                     }

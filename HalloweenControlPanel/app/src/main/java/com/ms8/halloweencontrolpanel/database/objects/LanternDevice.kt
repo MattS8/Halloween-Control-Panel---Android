@@ -21,7 +21,6 @@ class LanternDevice(
     override fun getFirebaseObject(): MutableMap<String, Any?> {
         val returnMap = super.getFirebaseObject()
 
-        returnMap[PIN] = pin
         returnMap[MIN_BRIGHTNESS] = minBrightness
         returnMap[MAX_BRIGHTNESS] = maxBrightness
         returnMap[SMOOTHING] = smoothing
@@ -32,6 +31,10 @@ class LanternDevice(
         returnMap[FLICKER_DELAY_MAX] = flickerDelayMax
 
         return returnMap
+    }
+
+    override fun getState(): String {
+        return ""
     }
 
     override fun getVariableDescription(context: Context, id: Int): String {
