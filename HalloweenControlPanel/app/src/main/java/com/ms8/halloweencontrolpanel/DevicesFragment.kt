@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.ms8.halloweencontrolpanel.database.objects.Device
 import com.ms8.halloweencontrolpanel.databinding.FragmentDevicesBinding
 import com.ms8.halloweencontrolpanel.devices_adapter.DevicesAdapter
@@ -33,17 +34,39 @@ class DevicesFragment : Fragment(), DevicesAdapter.DeviceClickListener, DevicesA
         // Inflate the layout for this fragment
         binding = FragmentDevicesBinding.inflate(inflater, container, false)
 
-        val application = requireNotNull(this.activity).application
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(getString(R.string.firebaseEmail), getString(R.string.firebasePass))
+                .addOnSuccessListener {
+                    setupDeviceListViewModel()
+                }
+        }
+        else {
+            setupDeviceListViewModel()
+        }
 
-        //val dataSource = DeviceDatabase.getInstance(application).deviceDatabaseDao
+        binding.rvDevices.adapter = DevicesAdapter(this, this)
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.rvDevices.layoutManager = GridLayoutManager(this.context, 2, GridLayoutManager.VERTICAL, false)
+        (binding.rvDevices.layoutManager as GridLayoutManager).spanSizeLookup = object :
+            GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when ((binding.rvDevices.adapter as DevicesAdapter).getItemViewType(position)) {
+                        TYPE_HEADER -> 2
+                        else -> 2
+                    }
+                }
+            }
+
+        return binding.root
+    }
+
+    private fun setupDeviceListViewModel() {
+        val application = requireNotNull(this.activity).application
         val viewModelFactory = DeviceListViewModelFactory(application)
 
         deviceListViewModel = ViewModelProvider(this, viewModelFactory)
             .get(DeviceListViewModel::class.java)
-
-        binding.rvDevices.adapter = DevicesAdapter(this, this)
-
-        binding.lifecycleOwner = viewLifecycleOwner
 
         deviceListViewModel?.navigateToDeviceDetail?.observe(viewLifecycleOwner, { deviceUID ->
             if (deviceUID == "")
@@ -58,23 +81,13 @@ class DevicesFragment : Fragment(), DevicesAdapter.DeviceClickListener, DevicesA
             )
             deviceListViewModel?.navigateToDeviceDetail?.value = ""
         })
+        deviceListViewModel?.deviceListError?.observe(viewLifecycleOwner, {error ->
+            Log.e("DevicesFragment", "Error with deviceListViewModel: $error")
 
+        })
         deviceListViewModel?.deviceList?.observe(viewLifecycleOwner, {devices ->
             (binding.rvDevices.adapter as DevicesAdapter).setDeviceList(devices)
         })
-
-        binding.rvDevices.layoutManager = GridLayoutManager(this.context, 2, GridLayoutManager.VERTICAL, false)
-        (binding.rvDevices.layoutManager as GridLayoutManager).spanSizeLookup = object :
-            GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when ((binding.rvDevices.adapter as DevicesAdapter).getItemViewType(position)) {
-                    TYPE_HEADER -> 2
-                    else -> 2
-                }
-            }
-        }
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

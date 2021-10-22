@@ -1,7 +1,6 @@
 package com.ms8.halloweencontrolpanel.devices_adapter
 
 
-import android.animation.ObjectAnimator
 import android.util.ArrayMap
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import com.ms8.halloweencontrolpanel.R
 import com.ms8.halloweencontrolpanel.database.objects.Device
 import com.ms8.halloweencontrolpanel.database.objects.LanternDevice
 import com.ms8.halloweencontrolpanel.database.objects.SpiderDropDevice
-import org.w3c.dom.Text
 
 
 class DevicesAdapter(val deviceClickListener: DeviceClickListener,

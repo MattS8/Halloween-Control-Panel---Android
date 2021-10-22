@@ -79,6 +79,9 @@
     <string name="up_limit_switch_pin_label">Up Limit Switch Pin:</string>
     <string name="pin_number_label">Pin #:</string>
 
+    <string name="firebaseEmail">_ENTER_EMAIL_ADDRESS</string>
+    <string name="firebasePass">_ENTER_EMAIL_PASSWORD</string>
+
     <string-array name="pin_values">
         <item>1</item>
         <item>2</item>
